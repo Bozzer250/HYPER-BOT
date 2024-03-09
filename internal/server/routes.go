@@ -15,23 +15,15 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/", s.HelloWorldHandler)
 	e.GET("/health", s.healthHandler)
 	fileServer := http.FileServer(http.FS(web.Files))
 	e.GET("/js/*", echo.WrapHandler(fileServer))
 	// web routes
+	// e.GET("/", s.HelloWorldHandler)
 	e.GET("/dashboard", webHandlers.RenderDashboardLandingPage)
-	e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
+	e.GET("/login", webHandlers.RenderLoginPage)
 
 	return e
-}
-
-func (s *Server) HelloWorldHandler(c echo.Context) error {
-	resp := map[string]string{
-		"message": "Hello World",
-	}
-
-	return c.JSON(http.StatusOK, resp)
 }
 
 func (s *Server) healthHandler(c echo.Context) error {
