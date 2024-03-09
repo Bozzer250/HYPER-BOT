@@ -1,0 +1,16 @@
+package webLayouts
+
+import "hyperbot/cmd/web"
+import "hyperbot/cmd/web/components/public"
+
+templ PublicLayout() {
+	@web.Base() {
+		<div class="bg-white">
+			@publicComponents.Navbar()
+			<main>
+				{ children... }
+			</main>
+			@publicComponents.Footer()
+		</div>
+	}
+}
