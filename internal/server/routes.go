@@ -3,10 +3,11 @@ package server
 import (
 	"net/http"
 
-	"github.com/a-h/templ"
+	"hyperbot/cmd/web"
+	webHandlers "hyperbot/cmd/web/handlers"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"hyperbot/cmd/web"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
@@ -18,8 +19,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	e.GET("/health", s.healthHandler)
 	fileServer := http.FileServer(http.FS(web.Files))
 	e.GET("/js/*", echo.WrapHandler(fileServer))
-
-	e.GET("/web", echo.WrapHandler(templ.Handler(web.HelloForm())))
+	// web routes
+	e.GET("/dashboard", webHandlers.RenderDashboardLandingPage)
 	e.POST("/hello", echo.WrapHandler(http.HandlerFunc(web.HelloWebHandler)))
 
 	return e
