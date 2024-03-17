@@ -19,7 +19,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	fileServer := http.FileServer(http.FS(web.Files))
 	e.GET("/js/*", echo.WrapHandler(fileServer))
 	// web routes
-	// e.GET("/", s.HelloWorldHandler)
+	e.GET("/", webHandlers.RenderLandingPage)
 	e.GET("/dashboard", webHandlers.RenderDashboardLandingPage)
 	e.GET("/login", webHandlers.RenderLoginPage)
 

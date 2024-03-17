@@ -10,3 +10,7 @@ import (
 func RenderLoginPage(c echo.Context) error {
 	return utils.RenderVIews(c, publicPages.LoginPage())
 }
+
+func RenderLandingPage(c echo.Context) error {
+	return utils.RenderVIews(c, publicPages.LandingPage())
+}
