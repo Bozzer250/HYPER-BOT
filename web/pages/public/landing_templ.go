@@ -10,8 +10,8 @@ import "context"
 import "io"
 import "bytes"
 
-import "hyperbot/cmd/web/layouts"
-import "hyperbot/cmd/web/components/public"
+import "hyperbot/web/layouts"
+import "hyperbot/web/components/public"
 
 func LandingPage() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {

@@ -1,8 +1,8 @@
 package webHandlers
 
 import (
-	dashboardPages "hyperbot/cmd/web/pages/dashboard"
 	"hyperbot/utils"
+	dashboardPages "hyperbot/web/pages/dashboard"
 
 	"github.com/labstack/echo/v4"
 )

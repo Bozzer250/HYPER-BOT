@@ -1,8 +1,8 @@
 package webHandlers
 
 import (
-	publicPages "hyperbot/cmd/web/pages/public"
 	"hyperbot/utils"
+	publicPages "hyperbot/web/pages/public"
 
 	"github.com/labstack/echo/v4"
 )

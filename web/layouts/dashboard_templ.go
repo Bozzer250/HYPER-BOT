@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-import "hyperbot/cmd/web"
+import "hyperbot/web"
 
 func DashboardLaoyts() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
