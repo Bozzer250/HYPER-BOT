@@ -30,13 +30,13 @@ func ConnectDB() {
 	// 	}
 	// }()
 	var result bson.M
-	if err := client.Database("neno").RunCommand(context.TODO(), bson.D{{Key: "ping", Value: 1}}).Decode(&result); err != nil {
+	if err := client.Database(AppEnv()).RunCommand(context.TODO(), bson.D{{Key: "ping", Value: 1}}).Decode(&result); err != nil {
 		log.Fatalf(err.Error())
 	}
 	fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 
 	MI = MongoInstance{
 		Client: client,
-		DB:     client.Database("prod"),
+		DB:     client.Database(AppEnv()),
 	}
 }

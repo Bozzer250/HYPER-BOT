@@ -14,3 +14,9 @@ func RenderLoginPage(c echo.Context) error {
 func RenderLandingPage(c echo.Context) error {
 	return utils.RenderVIews(c, publicPages.LandingPage())
 }
+
+func RenderPurchasePackagePage(ctx echo.Context) error {
+	name := ctx.QueryParam("mode")
+	price := ctx.QueryParam("price")
+	return utils.RenderVIews(ctx, publicPages.PurchasePackage(name, price))
+}

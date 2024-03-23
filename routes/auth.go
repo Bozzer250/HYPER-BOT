@@ -2,13 +2,41 @@ package routes
 
 import (
 	"fmt"
-	"net/http"
+	"hyperbot/configs"
+	"hyperbot/controllers"
+	"hyperbot/utils"
+	publicComponents "hyperbot/web/components/public"
 
+	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 )
 
+var Store = sessions.NewCookieStore([]byte(configs.GetSessionKey()))
+
 func HandleUserAuth(ctx echo.Context) error {
 	phone := ctx.FormValue("phone_number")
-	fmt.Println(phone)
-	return ctx.String(http.StatusCreated, "<div>dial *182*7*1# and follow instructions to complete the topup</div>")
+	err := controllers.HandleUserAuth(phone)
+	if err != nil {
+		return ctx.String(200, fmt.Sprintf("<div>There was an error authenticating your request.</br>%v</br>Contact support to get help</div>", err))
+	}
+	// return ctx.String(http.StatusCreated, utils.RenderVIews(ctx, publicComponents.OtpForm(phone)))
+	return utils.RenderVIews(ctx, publicComponents.OtpForm(phone, ""))
+}
+
+func VerifyOtp(ctx echo.Context) error {
+	phone := ctx.FormValue("phone_number")
+	code := ctx.FormValue("code")
+	uid, err := controllers.VerifyAndUpdateOtp(phone, code)
+	if err != nil {
+		fmt.Printf("Error verifying OTP: %v\n", err)
+		return utils.RenderVIews(ctx, publicComponents.OtpForm(phone, "There was an error verifying your OTP. Please try again"))
+	}
+	session, _ := Store.Get(ctx.Request(), "hyper-bots")
+	// Set some session values.
+	session.Values["uid"] = uid
+	errr := Store.Save(ctx.Request(), ctx.Response(), session)
+	if errr != nil {
+		fmt.Printf("Error saving session: %v\n", errr)
+	}
+	return utils.RenderVIews(ctx, publicComponents.GoToDashboardButton())
 }

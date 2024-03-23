@@ -7,6 +7,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func AppEnv() string {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found", err)
+	}
+	return os.Getenv("APP_ENV")
+}
+
 func EnvIsProd() bool {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("No .env file found", err)
@@ -27,6 +34,13 @@ func GetRedisUrl() string {
 		log.Println("No .env file found", err)
 	}
 	return os.Getenv("REDIS_URL")
+}
+
+func GetSessionKey() string {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found", err)
+	}
+	return os.Getenv("SESSION_KEY")
 }
 
 func EnvMongoURI() string {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"hyperbot/configs"
+	"hyperbot/routes"
 	"hyperbot/web"
 	webHandlers "hyperbot/web/handlers"
 
@@ -29,8 +30,12 @@ func main() {
 	app.GET("/", webHandlers.RenderLandingPage)
 	app.GET("/dashboard", webHandlers.RenderDashboardLandingPage)
 	app.GET("/login", webHandlers.RenderLoginPage)
+	app.GET("/invest", webHandlers.RenderPurchasePackagePage)
+	app.Static("/assets", "assets")
 
-	app.Static("/static", "assets")
+	// api routes
+	app.POST("/api/auth", routes.HandleUserAuth)
+	app.POST("/api/auth/verify", routes.VerifyOtp)
 
 	port := fmt.Sprintf(":%s", configs.EnvPort())
 
