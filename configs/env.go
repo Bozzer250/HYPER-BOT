@@ -3,6 +3,7 @@ package configs
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -22,11 +23,29 @@ func EnvIsProd() bool {
 	return isProd
 }
 
-func GetGoogleSecretString() string {
+func GetUsdToRwfRate() int {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("No .env file found", err)
 	}
-	return os.Getenv("GOOGLE_SECRET_STRING")
+	rate, err := strconv.Atoi(os.Getenv("USD_TO_RWF"))
+	if err != nil {
+		return 1300
+	}
+	return rate
+}
+
+func GetPaypackId() string {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found", err)
+	}
+	return os.Getenv("PAYPACK_CLIENT_ID")
+}
+
+func GetPaypackSecret() string {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found", err)
+	}
+	return os.Getenv("PAYPACK_CLIENT_SECRET")
 }
 
 func GetRedisUrl() string {
@@ -83,6 +102,17 @@ func GetGoogleClientId() string {
 		log.Println("No .env file found", err)
 	}
 	return os.Getenv("GOOGLE_CLIENT_ID")
+}
+
+func GetCashinUsdRate() int {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("No .env file found", err)
+	}
+	rate, err := strconv.Atoi(os.Getenv("USD_TO_RWF"))
+	if err != nil {
+		return 1300
+	}
+	return rate
 }
 
 func GetGoogleSecret() string {
