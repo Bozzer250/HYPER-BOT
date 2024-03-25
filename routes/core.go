@@ -18,7 +18,7 @@ func PurchaseNewAccount(ctx echo.Context) error {
 	if err != nil {
 		return ctx.String(200, fmt.Sprintf("<div>There was an error purchasing the bot.</br>%v</br>Contact support to get help</div>", err))
 	}
-	return utils.RenderVIews(ctx, publicComponents.GoToDashboardButton())
+	return utils.RenderVIews(ctx, publicComponents.GoToDashboardAfterPaymentButton())
 }
 
 func Test(c echo.Context) error {
