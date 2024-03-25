@@ -16,7 +16,7 @@ func RenderLandingPage(c echo.Context) error {
 }
 
 func RenderPurchasePackagePage(ctx echo.Context) error {
-	name := ctx.QueryParam("mode")
+	name := ctx.QueryParam("plan")
 	price := ctx.QueryParam("price")
 	return utils.RenderVIews(ctx, publicPages.PurchasePackage(name, price))
 }

@@ -10,11 +10,11 @@ templ PurchasePackage(name, price string) {
 			<div class="mx-auto w-full max-w-[550px] bg-white">
 				<form
 					class="py-6 px-9"
-					action="https://formbold.com/s/FORM_ID"
-					method="POST"
+					hx-post="/api/invest"
 				>
+					<input type="hidden" name="package__name" value={ name }/>
 					<label class="mb-5 block text-xl font-semibold text-[#07074D]">
-						Purchase the { name } Bot for ${ price }
+						Invest in { name } with ${ price }
 					</label>
 					<div class="mb-5">
 						<label
