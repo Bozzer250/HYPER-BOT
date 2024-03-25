@@ -6,12 +6,12 @@ import (
 )
 
 type Account struct {
-	ID          string `json:"id" bson:"_id"`
-	Status      string `json:"status" bson:"status"`
-	CreatedAt   string `json:"created_at" bson:"created_at"`
-	UserID      string `json:"user_id" bson:"user_id"`
-	AccountType string `json:"account_type" bson:"account_type"`
-	DailyRate   string `json:"daily_rate" bson:"daily_rate"`
+	ID          string  `json:"id" bson:"_id"`
+	Status      string  `json:"status" bson:"status"`
+	CreatedAt   string  `json:"created_at" bson:"created_at"`
+	UserID      string  `json:"user_id" bson:"user_id"`
+	AccountType string  `json:"account_type" bson:"account_type"`
+	DailyRate   float64 `json:"daily_rate" bson:"daily_rate"`
 }
 
 // create a new account
