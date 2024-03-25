@@ -36,6 +36,9 @@ func main() {
 	// api routes
 	app.POST("/api/auth", routes.HandleUserAuth)
 	app.POST("/api/auth/verify", routes.VerifyOtp)
+	app.POST("/api/invest", routes.PurchaseNewAccount)
+	app.POST("api/callbacks/paypack", routes.HandlePaypackCallback)
+	app.POST("/test", routes.Test)
 
 	port := fmt.Sprintf(":%s", configs.EnvPort())
 
