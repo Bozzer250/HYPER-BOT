@@ -23,7 +23,7 @@ func OtpForm(phone, err string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/api/auth/verify\" hx-redirect=\"/dashboard\"><p class=\"text-gray-600 text-sm\">Enter the 4 digit code sent to your phone number</p><span class=\"text-red-500\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/api/auth/verify\" hx-redirect=\"/dashboard\"><p class=\"text-gray-600 text-sm text-center\">Enter the 4 digit code sent to your phone number</p><span class=\"text-red-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
