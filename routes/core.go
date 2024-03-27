@@ -22,7 +22,7 @@ func PurchaseNewAccount(ctx echo.Context) error {
 }
 
 func Test(c echo.Context) error {
-	token, err := integrations.PaypackCashIn(100, "0788711226")
+	token, err := integrations.PollTransactionStatus("1f7b9253-410d-4b96-b6c1-bdffb2a23eb3")
 	if err != nil {
 		return c.String(200, fmt.Sprintf("<div>There was an error cashing in.</br>%v</br>Contact support to get help</div>", err))
 	}

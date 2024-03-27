@@ -34,3 +34,15 @@ func CreateUser(user User) error {
 	}
 	return nil
 }
+
+func GetAllActiveUsers() ([]User, error) {
+	var users []User
+	cursor, err := configs.MI.DB.Collection("users").Find(context.TODO(), bson.M{"status": "active"})
+	if err != nil {
+		return users, err
+	}
+	if err = cursor.All(context.TODO(), &users); err != nil {
+		return users, err
+	}
+	return users, nil
+}

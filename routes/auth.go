@@ -7,11 +7,8 @@ import (
 	"hyperbot/utils"
 	publicComponents "hyperbot/web/components/public"
 
-	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 )
-
-var Store = sessions.NewCookieStore([]byte(configs.GetSessionKey()))
 
 func HandleUserAuth(ctx echo.Context) error {
 	phone := ctx.FormValue("phone_number")
@@ -31,6 +28,7 @@ func VerifyOtp(ctx echo.Context) error {
 		fmt.Printf("Error verifying OTP: %v\n", err)
 		return utils.RenderVIews(ctx, publicComponents.OtpForm(phone, "There was an error verifying your OTP. Please try again"))
 	}
+	Store := configs.SessionStore
 	session, _ := Store.Get(ctx.Request(), "hyper-bots")
 	// Set some session values.
 	session.Values["uid"] = uid
