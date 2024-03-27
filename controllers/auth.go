@@ -66,5 +66,5 @@ func HandleUserAuth(phone string) error {
 	if user.Status != "active" {
 		return fmt.Errorf("user is not active")
 	}
-	return nil
+	return createAndSendOtp(user.ID, phone)
 }
