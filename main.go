@@ -7,6 +7,7 @@ import (
 
 	"hyperbot/configs"
 	"hyperbot/routes"
+	"hyperbot/utils"
 	"hyperbot/web"
 	webHandlers "hyperbot/web/handlers"
 
@@ -40,7 +41,10 @@ func main() {
 	app.POST("api/callbacks/paypack", routes.HandlePaypackCallback)
 	app.POST("/test", routes.Test)
 
+	utils.RunCronJobs()
+
 	port := fmt.Sprintf(":%s", configs.EnvPort())
 
 	log.Fatal(app.Start(port))
+
 }
