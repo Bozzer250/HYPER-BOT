@@ -38,6 +38,7 @@ func PurchaseNewAccount(phone, referralCode, packageName string) error {
 		AccountType: accountType,
 		DailyRate:   dailyRate,
 		UserID:      User.ID,
+		Price:       float64(price),
 	}
 	_ = models.CreateAccount(account)
 	tuid := uuid.New().String()
@@ -61,6 +62,25 @@ func PurchaseNewAccount(phone, referralCode, packageName string) error {
 	errr := models.AddProviderIdToTransaction(tuid, cashin.Ref)
 	if errr != nil {
 		fmt.Printf("Error adding provider id to transaction: %v", errr)
+	}
+	return nil
+}
+
+func LookupAllPendingPaypackTransactions() error {
+	transactions, err := models.GetPendingTransactionsByProvider("paypack")
+	if err != nil {
+		return err
+	}
+	for _, transaction := range transactions {
+		cashin, err := integrations.PollTransactionStatus(transaction.ProviderId)
+		if err != nil {
+			fmt.Printf("Error getting paypack transaction: %v", err)
+			continue
+		}
+		if cashin.Status == "success" {
+			_ = models.UpdateTransactionStatus(transaction.ID, "success")
+			_ = models.UpdateAccountStatus(transaction.AccountID, "active")
+		}
 	}
 	return nil
 }
