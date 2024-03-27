@@ -8,6 +8,7 @@ require (
 	github.com/gorilla/sessions v1.2.2
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.4
+	github.com/robfig/cron/v3 v3.0.1
 	go.mongodb.org/mongo-driver v1.14.0
 )
 
