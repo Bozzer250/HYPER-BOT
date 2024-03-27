@@ -8,6 +8,17 @@ import (
 	"net/http"
 )
 
+type PollResponseParams struct {
+	Amount    int     `json:"amount"`
+	Client    string  `json:"client"`
+	Fee       float64 `json:"fee"`
+	Kind      string  `json:"kind"`
+	Merchant  string  `json:"merchant"`
+	Ref       string  `json:"ref"`
+	Status    string  `json:"status"`
+	Timestamp string  `json:"timestamp"`
+}
+
 type authResp struct {
 	Access  string `json:"access"`
 	Refresh string `json:"refresh"`
@@ -73,6 +84,37 @@ func PaypackCashIn(amount int, number string) (CashinResponseParams, error) {
 	_ = json.NewEncoder(body).Encode(data)
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		fmt.Println(err)
+		return *response, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return *response, err
+	}
+	defer res.Body.Close()
+
+	err = json.NewDecoder(res.Body).Decode(&response)
+	if err != nil {
+		fmt.Println(err)
+		return *response, err
+	}
+
+	return *response, nil
+}
+
+func PollTransactionStatus(ref string) (PollResponseParams, error) {
+	var response *PollResponseParams
+	url := fmt.Sprintf("https://payments.paypack.rw/api/transactions/find/%s", ref)
+	method := "GET"
+	token, _ := Authenticate()
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		fmt.Println(err)
 		return *response, err
