@@ -12,6 +12,7 @@ type Account struct {
 	UserID      string  `json:"user_id" bson:"user_id"`
 	AccountType string  `json:"account_type" bson:"account_type"`
 	DailyRate   float64 `json:"daily_rate" bson:"daily_rate"`
+	Price       float64 `json:"price" bson:"price"`
 }
 
 // create a new account
@@ -50,4 +51,20 @@ func GetAccountByID(accountID string) (Account, error) {
 		return account, err
 	}
 	return account, nil
+}
+
+func GetSumOfAssetsByUserId(userID string) (float64, error) {
+	var accounts []Account
+	cursor, err := configs.MI.DB.Collection("accounts").Find(context.TODO(), map[string]string{"user_id": userID, "status": "active"})
+	if err != nil {
+		return 0, err
+	}
+	if err = cursor.All(context.TODO(), &accounts); err != nil {
+		return 0, err
+	}
+	var total float64
+	for _, account := range accounts {
+		total += account.Price
+	}
+	return total, nil
 }
