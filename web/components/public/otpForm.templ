@@ -2,6 +2,7 @@ package publicComponents
 
 templ OtpForm(phone, err string) {
 	<form hx-post="/api/auth/verify" hx-redirect="/dashboard">
+		<p class="text-gray-600 text-sm text-center">Enter the 4 digit code sent to your phone number</p>
 		<span class="text-red-500">{ err }</span>
 		<input type="hidden" name="phone_number" value={ phone }/>
 		<input

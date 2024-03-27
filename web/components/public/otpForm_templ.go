@@ -23,14 +23,14 @@ func OtpForm(phone, err string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/api/auth/verify\" hx-redirect=\"/dashboard\"><span class=\"text-red-500\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-post=\"/api/auth/verify\" hx-redirect=\"/dashboard\"><p class=\"text-gray-600 text-sm\">Enter the 4 digit code sent to your phone number</p><span class=\"text-red-500\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(err)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/components/public/otpForm.templ`, Line: 4, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/components/public/otpForm.templ`, Line: 5, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
