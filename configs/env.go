@@ -76,11 +76,11 @@ func EnvPort() string {
 	return os.Getenv("PORT")
 }
 
-func EnvPindoToken() string {
+func EnvNenoApiKey() string {
 	if err := godotenv.Load(".env"); err != nil {
 		log.Println("No .env file found", err)
 	}
-	return os.Getenv("PINDO_TOKEN")
+	return os.Getenv("NENO_API_KEY")
 }
 
 func EnvNewRelicKey() string {
