@@ -86,3 +86,15 @@ func AddProviderIdToTransaction(transactionID, providerId string) error {
 	}
 	return nil
 }
+
+func GetPendingTransactionsByProvider(provider string) ([]Transactions, error) {
+	var transactions []Transactions
+	cursor, err := configs.MI.DB.Collection("transactions").Find(context.TODO(), map[string]string{"provider": provider, "status": "pending"})
+	if err != nil {
+		return transactions, err
+	}
+	if err = cursor.All(context.TODO(), &transactions); err != nil {
+		return transactions, err
+	}
+	return transactions, nil
+}
