@@ -3,17 +3,19 @@ package models
 import (
 	"context"
 	"hyperbot/configs"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 type User struct {
-	ID        string `json:"id" bson:"_id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Phone     string `json:"phone"`
-	CreatedAt string `json:"created_at"`
-	Status    string `json:"status"`
+	ID           string    `json:"id" bson:"_id"`
+	FirstName    string    `json:"first_name"`
+	LastName     string    `json:"last_name"`
+	Phone        string    `json:"phone"`
+	CreatedAt    time.Time `json:"created_at"`
+	Status       string    `json:"status"`
+	ReferralCode string    `json:"referral_code"`
 }
 
 // get user by phone
@@ -24,6 +26,12 @@ func GetUserByPhone(phone string) (User, error) {
 		return user, err
 	}
 	return user, nil
+}
+
+func GetUserById(id string) User {
+	var user User
+	_ = configs.MI.DB.Collection("users").FindOne(context.TODO(), bson.M{"_id": id}).Decode(&user)
+	return user
 }
 
 // create new user
@@ -45,4 +53,13 @@ func GetAllActiveUsers() ([]User, error) {
 		return users, err
 	}
 	return users, nil
+}
+
+func GetUserIdFromReferralCode(referralCode string) (string, error) {
+	var user User
+	err := configs.MI.DB.Collection("users").FindOne(context.TODO(), bson.M{"referral_code": referralCode}).Decode(&user)
+	if err != nil {
+		return "", err
+	}
+	return user.ID, nil
 }

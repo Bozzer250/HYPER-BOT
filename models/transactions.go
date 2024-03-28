@@ -3,21 +3,22 @@ package models
 import (
 	"context"
 	"hyperbot/configs"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Transactions struct {
-	ID              string `json:"id" bson:"_id"`
-	Status          string `json:"status" bson:"status"`
-	CreatedAt       string `json:"created_at" bson:"created_at"`
-	UserID          string `json:"user_id" bson:"user_id"`
-	AccountID       string `json:"account_id" bson:"account_id"`
-	Amount          int    `json:"amount" bson:"amount"`
-	TransactionType string `json:"transaction_type" bson:"transaction_type"`
-	Provider        string `json:"provider" bson:"provider"`
-	ProviderId      string `json:"provider_id" bson:"provider_id"`
-	UpdatedAt       string `json:"updated_at" bson:"updated_at"`
+	ID              string    `json:"id" bson:"_id"`
+	Status          string    `json:"status" bson:"status"`
+	UserID          string    `json:"user_id" bson:"user_id"`
+	AccountID       string    `json:"account_id" bson:"account_id"`
+	Amount          float64   `json:"amount" bson:"amount"`
+	TransactionType string    `json:"transaction_type" bson:"transaction_type"`
+	Provider        string    `json:"provider" bson:"provider"`
+	ProviderId      string    `json:"provider_id" bson:"provider_id"`
+	CreatedAt       time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at" bson:"updated_at"`
 }
 
 func CreateTransaction(transaction Transactions) error {
