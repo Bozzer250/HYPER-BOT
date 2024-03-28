@@ -30,6 +30,7 @@ func main() {
 	// web routes
 	app.GET("/", webHandlers.RenderLandingPage)
 	app.GET("/dashboard", webHandlers.RenderDashboardLandingPage)
+	app.GET("/dashboard/profile", webHandlers.RenderProfilePage)
 	app.GET("/login", webHandlers.RenderLoginPage)
 	app.GET("/invest", webHandlers.RenderPurchasePackagePage)
 	app.Static("/assets", "assets")
@@ -41,10 +42,9 @@ func main() {
 	app.POST("api/callbacks/paypack", routes.HandlePaypackCallback)
 	app.POST("/test", routes.Test)
 
-	utils.RunCronJobs()
+	go utils.RunCronJobs()
 
 	port := fmt.Sprintf(":%s", configs.EnvPort())
-
 	log.Fatal(app.Start(port))
 
 }
