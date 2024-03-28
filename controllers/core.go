@@ -5,6 +5,7 @@ import (
 	"hyperbot/configs"
 	"hyperbot/integrations"
 	"hyperbot/models"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -28,17 +29,18 @@ func PurchaseNewAccount(phone, referralCode, packageName string) error {
 		// create new user
 		return err
 	}
-	fmt.Printf("\nUser: %v and id is %s", User, User.ID)
 	accountType, price, dailyRate := GetPackageDetails(packageName)
 	// create new account
 	uid := uuid.New().String()
 	account := models.Account{
-		ID:          uid,
-		Status:      "pending",
-		AccountType: accountType,
-		DailyRate:   dailyRate,
-		UserID:      User.ID,
-		Price:       float64(price),
+		ID:           uid,
+		Status:       "pending",
+		AccountType:  accountType,
+		DailyRate:    dailyRate,
+		UserID:       User.ID,
+		Price:        float64(price),
+		ReferralCode: referralCode,
+		CreatedAt:    time.Now(),
 	}
 	_ = models.CreateAccount(account)
 	tuid := uuid.New().String()
@@ -48,9 +50,10 @@ func PurchaseNewAccount(phone, referralCode, packageName string) error {
 		Status:          "pending",
 		UserID:          User.ID,
 		AccountID:       account.ID,
-		Amount:          amount,
+		Amount:          float64(amount),
 		TransactionType: "cashin",
 		Provider:        "paypack",
+		CreatedAt:       time.Now(),
 	}
 	_ = models.CreateTransaction(transaction)
 	// send transacion to paypack
@@ -79,8 +82,40 @@ func LookupAllPendingPaypackTransactions() error {
 		}
 		if cashin.Status == "success" {
 			_ = models.UpdateTransactionStatus(transaction.ID, "success")
-			_ = models.UpdateAccountStatus(transaction.AccountID, "active")
+			_ = activateAccount(transaction.AccountID)
+		}
+		if cashin.Status == "failed" || cashin.Status == "expired" || cashin.Status == "cancelled" {
+			_ = models.UpdateTransactionStatus(transaction.ID, "failed")
+			_ = models.UpdateAccountStatus(transaction.AccountID, "failed")
 		}
 	}
+	return nil
+}
+
+func activateAccount(accountId string) error {
+	account, err := models.GetAccountByID(accountId)
+	if err != nil {
+		return err
+	}
+	if account.Status == "active" {
+		return fmt.Errorf("account is already active")
+	}
+	errr := models.UpdateAccountStatus(accountId, "active")
+	if errr != nil {
+		return errr
+	}
+	if len(account.ReferralCode) > 3 {
+		userId, _ := models.GetUserIdFromReferralCode(account.ReferralCode)
+		transaction := models.Transactions{
+			ID:              uuid.New().String(),
+			Status:          "completed",
+			UserID:          userId,
+			Amount:          account.Price * 0.1,
+			TransactionType: "referral",
+			CreatedAt:       time.Now(),
+		}
+		_ = models.CreateTransaction(transaction)
+	}
+
 	return nil
 }
