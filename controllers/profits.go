@@ -20,7 +20,7 @@ func CalculateTodayProfit(userId string) error {
 				ID:              tuid,
 				UserID:          userId,
 				AccountID:       account.ID,
-				Amount:          int(profit),
+				Amount:          profit,
 				TransactionType: "profit",
 				Provider:        "hyperbot",
 				Status:          "pending",

@@ -3,16 +3,18 @@ package models
 import (
 	"context"
 	"hyperbot/configs"
+	"time"
 )
 
 type Account struct {
-	ID          string  `json:"id" bson:"_id"`
-	Status      string  `json:"status" bson:"status"`
-	CreatedAt   string  `json:"created_at" bson:"created_at"`
-	UserID      string  `json:"user_id" bson:"user_id"`
-	AccountType string  `json:"account_type" bson:"account_type"`
-	DailyRate   float64 `json:"daily_rate" bson:"daily_rate"`
-	Price       float64 `json:"price" bson:"price"`
+	ID           string    `json:"id" bson:"_id"`
+	Status       string    `json:"status" bson:"status"`
+	CreatedAt    time.Time `json:"created_at" bson:"created_at"`
+	UserID       string    `json:"user_id" bson:"user_id"`
+	AccountType  string    `json:"account_type" bson:"account_type"`
+	DailyRate    float64   `json:"daily_rate" bson:"daily_rate"`
+	Price        float64   `json:"price" bson:"price"`
+	ReferralCode string    `json:"referral_code,omitempty" bson:"referral_code,omitempty"`
 }
 
 // create a new account
