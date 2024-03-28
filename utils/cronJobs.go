@@ -3,18 +3,13 @@ package utils
 import (
 	"fmt"
 	"hyperbot/controllers"
-	"time"
 
 	"github.com/robfig/cron/v3"
 )
 
 func RunProfitJob() {
-	loc, err := time.LoadLocation("Africa/Kigali")
-	if err != nil {
-		fmt.Printf("Error loading location: %v\n", err)
-	}
-	cronJob := cron.New(cron.WithLocation(loc))
-	id, errr := cronJob.AddFunc("@daily", func() {
+	cronJob := cron.New()
+	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Kigali @daily", func() {
 		controllers.CronjobToCalculatodayProfit()
 	})
 	if errr != nil {
@@ -26,12 +21,8 @@ func RunProfitJob() {
 }
 
 func RunJobToLookupPendingPaypackTransaction() {
-	loc, err := time.LoadLocation("Africa/Kigali")
-	if err != nil {
-		fmt.Printf("Error loading location: %v\n", err)
-	}
-	cronJob := cron.New(cron.WithLocation(loc))
-	id, errr := cronJob.AddFunc("@every 5m", func() {
+	cronJob := cron.New()
+	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Kigali @every 5m", func() {
 		err := controllers.LookupAllPendingPaypackTransactions()
 		if err != nil {
 			fmt.Printf("Error looking up pending paypack transactions: %v\n", err)
