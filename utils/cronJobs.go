@@ -14,7 +14,7 @@ func RunProfitJob() {
 		fmt.Printf("Error loading location: %v\n", err)
 	}
 	cronJob := cron.New(cron.WithLocation(loc))
-	id, errr := cronJob.AddFunc("0 0 0 * * *", func() {
+	id, errr := cronJob.AddFunc("@daily", func() {
 		controllers.CronjobToCalculatodayProfit()
 	})
 	if errr != nil {
@@ -22,7 +22,7 @@ func RunProfitJob() {
 	}
 	fmt.Printf("Profit job ID: %v\n", id)
 	cronJob.Start()
-	select {}
+
 }
 
 func RunJobToLookupPendingPaypackTransaction() {
@@ -43,10 +43,9 @@ func RunJobToLookupPendingPaypackTransaction() {
 	fmt.Printf("pending transactions job ID: %v\n", id)
 	cronJob.Start()
 	select {}
-
 }
 
 func RunCronJobs() {
-	go RunProfitJob()
-	go RunJobToLookupPendingPaypackTransaction()
+	RunJobToLookupPendingPaypackTransaction()
+	RunProfitJob()
 }

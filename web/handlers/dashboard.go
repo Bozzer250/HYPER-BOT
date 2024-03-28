@@ -1,7 +1,6 @@
 package webHandlers
 
 import (
-	"fmt"
 	"hyperbot/configs"
 	"hyperbot/models"
 	"hyperbot/utils"
@@ -14,7 +13,14 @@ func RenderDashboardLandingPage(ctx echo.Context) error {
 	Store := configs.SessionStore
 	session, _ := Store.Get(ctx.Request(), "hyper-bots")
 	userId := session.Values["uid"].(string)
-	fmt.Printf("\nUser ID: %s\n", userId)
 	totalAssets, _ := models.GetSumOfAssetsByUserId(userId)
 	return utils.RenderVIews(ctx, dashboardPages.DashboardLandingPage(totalAssets))
+}
+
+func RenderProfilePage(ctx echo.Context) error {
+	Store := configs.SessionStore
+	session, _ := Store.Get(ctx.Request(), "hyper-bots")
+	userId := session.Values["uid"].(string)
+	user := models.GetUserById(userId)
+	return utils.RenderVIews(ctx, dashboardPages.ProfilePage(user))
 }
