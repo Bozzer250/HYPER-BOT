@@ -6,6 +6,7 @@ import (
 	"hyperbot/models"
 	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -47,9 +48,11 @@ func createAndSendOtp(UserId, phone string) error {
 func createNewUser(phone string) error {
 	uid := uuid.New().String()
 	user := models.User{
-		Phone:  phone,
-		Status: "active",
-		ID:     uid,
+		Phone:        phone,
+		Status:       "active",
+		ID:           uid,
+		CreatedAt:    time.Now(),
+		ReferralCode: "HYP" + strconv.Itoa(1000+rand.Intn(9000)),
 	}
 	err := models.CreateUser(user)
 	if err != nil {
