@@ -9,7 +9,7 @@ import (
 
 func RunProfitJob() {
 	cronJob := cron.New()
-	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Kigali @daily", func() {
+	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Cairo @daily", func() {
 		controllers.CronjobToCalculatodayProfit()
 	})
 	if errr != nil {
@@ -22,7 +22,7 @@ func RunProfitJob() {
 
 func RunJobToLookupPendingPaypackTransaction() {
 	cronJob := cron.New()
-	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Kigali @every 5m", func() {
+	id, errr := cronJob.AddFunc("CRON_TZ=Africa/Cairo @every 5m", func() {
 		err := controllers.LookupAllPendingPaypackTransactions()
 		if err != nil {
 			fmt.Printf("Error looking up pending paypack transactions: %v\n", err)
